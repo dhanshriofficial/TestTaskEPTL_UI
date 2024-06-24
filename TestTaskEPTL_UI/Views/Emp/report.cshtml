@@ -1,0 +1,153 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<TestTaskEPTL_UI.Models.EmpModel>
+ <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    
+        function getdata() {
+            var data = $("formid").serialize()
+            console.log(data)
+            alert("hii")
+            $.ajax({
+                type: 'GET',
+                url: "http://localhost:10251/api/Test",
+                success: function (list) {
+                    console.log(list)
+                    {
+                        $(list).each(function (index, obj) {
+                            $("#formid").append(
+                                '<tr>' +
+                                '<td>' + obj.id + '</td>' +
+                                '<td>' + obj.emp_name + '</td>' +
+                                '<td>' + obj.emp_address + '</td>' +
+                                '<td>' + obj.emp_contact + '</td>' +
+                                '<td>' + obj.emp_DOB + '</td>' +
+                                '<td>' + obj.emp_designation + '</td>' +
+                                '<td>' + obj.emp_email + '</td>' +
+                                '<td>' + obj.emp_salary + '</td>' +
+                                '<td>' + '<button type="button" style="color:green" onclick="   (' + obj.id+')" id="editbutton">EDIT</button>' + '</td>' +
+                                '<td>' + '<button type="button" style="color:red" onclick="Delete(' + obj.id + ')" id="deletebutton" >DELETE</button>' + '</td>' +
+                                '</tr>'
+                            )
+                        });
+                    }
+                }
+            });
+        }
+    
+    function Delete(id)
+    {
+        var empid = id ;
+        alert(empid)
+        $.ajax({
+            type: 'DELETE',
+            url: 'http://localhost:10251/api/Test/'+ empid,
+            success: function (result)
+            {
+                $(empid).remove();
+                console.log(result)
+                console.log("Data Deleted Successfully!")
+            },
+            error: function (xhr, status, error)
+            {
+                alert("error deleting employee");
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+    function edit(id) {
+      
+        var empid = id;
+        alert(empid)
+        var model =
+        {
+            Id: id,
+            Emp_name: $("#empname").val(),
+            Emp_address: $("#empaddress").val(),
+            Emp_contact: $("#empcontact").val(),
+            Emp_DOB: $("#Emp_DOB").val(),
+            Emp_designation: $("#empdesignation").val(),
+            Emp_email: $("#empemail").val(),
+            Emp_salary: $("#empsalary").val()
+        };
+        console.log(model)
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:10251/api/Test/' + empid,
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            success: function (model) {
+                console.log(model);
+               // $("#Empid").val(model.id);
+               // $("#empid").val(model.id);
+               // $("#empname").val(model.emp_name);
+               // $("#empaddress").val(model.emp_address);
+               // $("#empcontact").val(model.emp_contact);
+               // $("#empdob").val(model.emp_DOB);
+               // $("#empdesignation").val(model.emp_designation);
+               // $("#empemail").val(model.emp_email);
+               // $("#empsalary").val(model.emp_salary);
+               // $("formid").show();
+            },
+            error: function (xhr, status, error)
+            {
+                console.error("Error fetching data:", status, error
+                );
+            }
+        });
+    }
+</script>
+
+<br />
+<div class="card-header bg-info">
+    <h5 class="font-weight-bolder text-center text-Black">
+        Report
+    </h5>
+</div>
+<br />
+
+<table id="reporttable"class="table table-bordered" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Emp_name
+            </th>
+            <th>
+                Emp_address
+            </th>
+            <th>
+                Emp_contact
+            </th>
+            <th>
+                Emp_DOB
+            </th>
+            <th>
+                Emp_designation
+            </th>
+            <th>
+                Emp_email
+            </th>
+            <th>
+                Emp_salary
+            </th>
+            <th>
+                EDIT
+            </th>
+            <th>
+                DELETE
+            </th>
+        </tr>
+    </thead>
+        <tbody id="formid">
+           </tbody>
+</table>
+<input type="button" value=" report" class="btn btn-dark" onclick="getdata()" />
+
+

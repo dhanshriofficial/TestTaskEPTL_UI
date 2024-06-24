@@ -1,0 +1,106 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TestTaskEPTL_UI.Models.EmpModel
+    <script type="text/javascript">
+const { Button } = require("bootstrap");
+
+
+        function postdata()
+        {
+
+            var formdata = {
+                Emp_name:$("#empname").val(),
+                Emp_address:$("#empaddress").val(),
+                Emp_contact:$("#empcontact").val(),
+                Emp_DOB:$("#Emp_DOB").val(),
+                Emp_designation:$("#empdesignation").val(),
+                Emp_email:$("#empemail").val(),
+                Emp_salary:$("#empsalary").val()
+            };
+            $.ajax({
+
+                type: 'Post',
+                url: "http://localhost:10251/api/Test",
+                data: JSON.stringify(formdata),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data)
+                {
+                    console.log(data);
+                },
+                error: function ()
+                {
+                    alert("Error updating employee");
+                }
+            });
+        }
+    </script>
+
+<br />
+<div class="tab-content" >
+    <div id="Insert" class="container-fluid tab-pane active">
+        <div class="card-header bg-info">
+            <h5 class="font-weight-bolder text-center text-black">
+
+                Employee Form
+
+            </h5>
+             </div>
+    </div>
+</div>
+<br />
+<form asp-action="create" method="post" id="formid">
+    <div class="row">
+
+       
+        <div class="col-md-3">
+            <div class="form-group">
+                <input type="hidden" id="Empid" name="Empid" value="" />
+              
+                <label asp-for="Emp_name" class="control-label"></label>
+                <input asp-for="Emp_name" class="form-control" id="empname" />
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_address" class="control-label"></label>
+                <input asp-for="Emp_address" class="form-control" id="empaddress" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_contact" class="control-label"></label>
+                <input asp-for="Emp_contact" class="form-control" id="empcontact" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_DOB" class="control-label"></label>
+                <input asp-for="Emp_DOB" class="form-control" id="empdob" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_designation" class="control-label"></label>
+                <input asp-for="Emp_designation" class="form-control" id="empdesignation" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_email" class="control-label"></label>
+                <input asp-for="Emp_email" class="form-control" id="empemail" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="Emp_salary" class="control-label"></label>
+                <input asp-for="Emp_salary" class="form-control" id="empsalary" />
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="create" class="btn btn-primary" onclick="postdata()" />
+</form>
+  @Html.Partial("~/Views/Emp/report.cshtml")
